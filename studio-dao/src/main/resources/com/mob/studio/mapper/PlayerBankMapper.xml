@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mob.studio.mapper.PlayerBankMapper">
+    <resultMap id="playerBank" type="PlayerBank">
+        <id property="playerId" column="player_id" />
+        <result property="coin" column="coin" />
+        <result property="point" column="point" />
+        <result property="coinIn" column="coin_in" />
+        <result property="coinOut" column="coin_out" />
+        <result property="pointIn" column="point_in" />
+        <result property="pointOut" column="point_out" />
+    </resultMap>
+
+    <select id="getPlayerPointById" parameterType="Long" resultType="Long">
+        SELECT `point` FROM player_point
+        WHERE player_id = #{playerId}
+    </select>
+
+    <select id="getPlayerCoinById" parameterType="Long" resultType="Long">
+        SELECT coin FROM player_coin
+        WHERE player_id = #{playerId}
+    </select>
+
+    <select id="getPlayerCoinOutById" parameterType="Long" resultType="Long">
+        SELECT coin_out FROM player_bank_statistic
+        WHERE player_id = #{playerId}
+    </select>
+
+    <insert id="insertPlayerCoin" parameterType="PlayerBank">
+        INSERT INTO player_coin(player_id, coin, updated_on)
+        VALUES
+        (#{playerId}, #{coin}, UNIX_TIMESTAMP())
+    </insert>
+
+    <insert id="insertPlayerPoint" parameterType="PlayerBank">
+        INSERT INTO player_point(player_id, `point`, updated_on)
+        VALUES
+        (#{playerId}, #{point}, UNIX_TIMESTAMP())
+    </insert>
+
+    <insert id="insertPlayerBankStatistic" parameterType="PlayerBank">
+        INSERT INTO player_bank_statistic(player_id, coin_in, coin_out, point_in, point_out, updated_on)
+        VALUES
+        (#{playerId}, #{coinIn}, #{coinOut}, #{pointIn}, #{pointOut}, UNIX_TIMESTAMP())
+    </insert>
+
+    <update id="updatePlayerCoin" parameterType="PlayerBank">
+        UPDATE player_coin
+        SET coin = #{coin}
+        WHERE player_id = #{playerId}
+    </update>
+
+    <update id="updatePlayerPoint" parameterType="PlayerBank">
+        UPDATE player_point
+        SET `point` = #{point}
+        WHERE player_id = #{playerId}
+    </update>
+
+    <update id="updatePlayerBankStatistic" parameterType="PlayerBank">
+        UPDATE player_bank_statistic
+        SET coin_in = #{coinIn},
+            coin_out = #{coinOut},
+            point_in = #{pointIn},
+            point_out = #{pointOut},
+            updated_on = UNIX_TIMESTAMP()
+        WHERE player_id = #{playerId}
+    </update>
+
+    <select id="getPlayerBankStatisticById" parameterType="Long" resultMap="playerBank">
+        SELECT * FROM player_bank_statistic WHERE player_id = #{playerId}
+    </select>
+
+</mapper>

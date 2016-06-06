@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+  <properties resource="mysql/config.properties"></properties>
+  
+  <settings>
+    <setting name="logImpl" value="${logImpl}"/>
+  </settings>
+  
+  
+  <typeAliases>
+	  <typeAlias type="com.mob.studio.domain.Player" alias="Player"/>
+	  <typeAlias type="com.mob.studio.domain.PlayerBank" alias="PlayerBank"/>
+	  <typeAlias type="com.mob.studio.domain.Item" alias="Item" />
+	  <typeAlias type="com.mob.studio.domain.Payment" alias="Payment" />
+	  <typeAlias type="com.mob.studio.domain.PaymentItem" alias="PaymentItem" />
+	  <typeAlias type="com.mob.studio.domain.PaymentEscrow" alias="PaymentEscrow" />
+	  <typeAlias type="com.mob.studio.domain.CoinHist" alias="CoinHist" />
+  </typeAliases>
+ 
+  <environments default="${environment}">
+	<environment id="local">
+	  <transactionManager type="${transactionManager_type}"/>
+	  <dataSource type="${datasource_type}">
+		<property name="driver" value="${driver}" />
+		<property name="url" value="${studio-url}" />
+		<property name="username" value="${studio-username}" />
+		<property name="password" value="${studio-password}" />
+		<property name="poolMaximumIdleConnections" value="${jdbc.minPoolSize}" />
+		<property name="poolMaximumActiveConnections" value="${jdbc.maxPoolSize}" />
+		<property name="poolTimeToWait" value="${jdbc.maxIdleTime}" />
+		<property name="poolPingQuery" value="SELECT NOW()" />
+        <property name="poolPingEnabled" value="true" />
+	  </dataSource>
+	</environment>
+	<environment id="development">
+	  <transactionManager type="${transactionManager_type}"/>
+	  <dataSource type="${datasource_type}">
+		<property name="driver" value="${driver}" />
+		<property name="url" value="${interact-url}" />       
+		<property name="username" value="${studio-username}" />
+		<property name="password" value="${studio-password}" />
+		<property name="poolMaximumIdleConnections" value="${jdbc.minPoolSize}" />
+		<property name="poolMaximumActiveConnections" value="${jdbc.maxPoolSize}" />
+		<property name="poolTimeToWait" value="${jdbc.maxIdleTime}" />
+		<property name="poolPingQuery" value="SELECT NOW()" />
+        <property name="poolPingEnabled" value="true" />
+	  </dataSource>
+	</environment>
+	<environment id="production">
+	  <transactionManager type="${transactionManager_type}"/>
+	  <dataSource type="${datasource_type}">
+		<property name="driver" value="${driver}" />
+		<property name="url" value="${studio-url}" />
+		<property name="username" value="${studio-username}" />
+		<property name="password" value="${studio-password}" />
+		<property name="poolMaximumIdleConnections" value="${jdbc.minPoolSize}" />
+		<property name="poolMaximumActiveConnections" value="${jdbc.maxPoolSize}" />
+		<property name="poolTimeToWait" value="${jdbc.maxIdleTime}" />
+		<property name="poolPingQuery" value="SELECT NOW()" />
+        <property name="poolPingEnabled" value="true" />
+	  </dataSource>
+	</environment>
+  </environments>
+ 
+ 
+  <mappers>
+	  <mapper resource="com/mob/studio/mapper/PlayerMapper.xml"/>
+	  <mapper resource="com/mob/studio/mapper/PlayerBankMapper.xml"/>
+	  <mapper resource="com/mob/studio/mapper/ItemMapper.xml" />
+	  <mapper resource="com/mob/studio/mapper/PaymentMapper.xml" />
+  </mappers>
+ 
+</configuration> 

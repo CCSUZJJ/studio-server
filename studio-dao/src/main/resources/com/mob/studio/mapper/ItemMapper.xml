@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mob.studio.mapper.ItemMapper">
+    <resultMap id="item" type="Item">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="price" column="price" />
+        <result property="point" column="point" />
+        <result property="disabled" column="disabled" />
+        <result property="createdOn" column="created_on" />
+        <result property="updatedOn" column="updated_on" />
+    </resultMap>
+
+    <insert id="insertItem" parameterType="Item">
+        INSERT INTO `item` (`id`, `name`, `price`, `point`, `disabled`, `created_on`, `updated_on`)
+        VALUES
+        (#{id}, #{name}, #{price}, #{point}, #{disabled}, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+
+    </insert>
+
+    <update id="updateItem" parameterType="Item" >
+        UPDATE `item` SET
+        `name` = #{name},
+        `price` = #{price},
+        `point` = #{point},
+        `disabled` = #{disabled},
+        updated_on = UNIX_TIMESTAMP()
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="getItemById" parameterType="String" resultMap="item">
+      SELECT * FROM `item`
+      WHERE id = #{id} AND disabled = 0
+    </select>
+
+    <select id="getItemAll" resultMap="item">
+        SELECT * from `item`
+        WHERE disabled = 0
+    </select>
+
+
+</mapper>

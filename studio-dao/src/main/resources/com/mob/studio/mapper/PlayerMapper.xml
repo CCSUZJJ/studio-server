@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mob.studio.mapper.PlayerMapper">
+    <resultMap id="player" type="Player">
+        <id property="id" column="id" />
+        <result property="nick" column="nick" />
+        <result property="city" column="city" />
+        <result property="sex" column="sex" />
+        <result property="avatar" column="avatar" />
+        <result property="intro" column="intro" />
+        <result property="aliasId" column="alias_id"/>
+        <result property="aliasType" column="alias_type" />
+        <result property="createdOn" column="created_on" />
+        <result property="updatedOn" column="updated_on" />
+    </resultMap>
+
+    <insert id="insertPlayer" parameterType="Player">
+        <selectKey resultType="Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO player (nick, city, sex, avatar, intro,
+        alias_id, alias_type, created_on, updated_on)
+        VALUES
+        (#{nick}, #{city}, #{sex}, #{avatar}, #{intro},
+        #{aliasId}, #{aliasType}, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+
+    </insert>
+
+    <update id="updatePlayer" parameterType="Player" >
+        UPDATE player SET
+        nick = #{nick},
+        city = #{city},
+        sex = #{sex},
+        avatar = #{avatar},
+        intro = #{intro},
+        updated_on = UNIX_TIMESTAMP()
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="getPlayerById" parameterType="long" resultMap="player">
+      SELECT * FROM player
+      WHERE id = #{id}
+    </select>
+
+    <select id="getPlayerByAliasId" parameterType="map" resultMap="player">
+        SELECT * FROM player
+        WHERE 1=1
+        <if test="aliasId != null">
+            AND alias_id = #{aliasId}
+        </if>
+    </select>
+
+    <select id="findPlayerByFuzzyNick" parameterType="map" resultMap="player">
+        SELECT * FROM player
+        WHERE nick LIKE  CONCAT(CONCAT('%',#{nick},'%'))
+            ORDER BY created_on DESC
+        LIMIT #{start},#{pageSize}
+    </select>
+
+    <select id="getFollowersIdById" parameterType="long" resultType="Long">
+        SELECT follower_id FROM follower
+        WHERE player_id = #{playerId}
+    </select>
+
+    <select id="getFansIdById" parameterType="long" resultType="Long">
+        SELECT player_id FROM follower
+        WHERE follower_id = #{playerId}
+    </select>
+
+    <insert id="insertFollower" parameterType="map">
+        INSERT INTO follower(player_id,follower_id)
+        VALUES (#{playerId}, #{followerId})
+    </insert>
+
+    <select id="getBlackListById" parameterType="Long" resultType="Long">
+        SELECT black_id FROM blacklist
+        WHERE player_id = #{value}
+    </select>
+
+    <insert id="insertBlackList" parameterType="map">
+        INSERT INTO blacklist(player_id,black_id)
+        VALUES (#{playerId}, #{blackId})
+    </insert>
+
+    <delete id="deleteFollower" parameterType="map">
+        DELETE FROM follower
+        WHERE player_id = #{playerId} AND follower_id = #{followerId}
+    </delete>
+
+    <delete id="deleteBlackList" parameterType="map">
+        DELETE FROM blacklist
+        WHERE player_id = #{playerId} AND black_id = #{blackId}
+    </delete>
+
+</mapper>

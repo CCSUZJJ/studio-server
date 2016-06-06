@@ -1,0 +1,44 @@
+数据包说明
+数据包共包含4个项:
+int            int      int          int        string
+数据包总长度   消息ID   消息体长度   可选参数   消息体
+
+
+1.进入房间
+向服务器发送:
+{presence:{type:"subscribe",from="member001",to:"group001",profile:{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member001","nick":"lamfire","city":"shanghai"}}
+
+其它成员(包括自已)将收到进入消息:
+{presence:{type:"subscribed",from="member001",to:"group001",profile:{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member001","nick":"lamfire","city":"shanghai"}}
+
+服务器在用户进入房间后主动推送成员列表:
+{presence:{type:"available",from:"group001",to:"member001",members:[{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member001","nick":"lamfire","city":"shanghai"},{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member002","nick":"hayash","city":"shanghai"}],"giftPoint":10041}}
+
+2.成员已离开房间
+服务器推送：
+{presence:{type:"unsubscribed",from="member001",to:"group001"}
+
+3.发送消息
+{"message":{"type":"TEXT","to":"group001","from":"member001","body":"hello"}}
+{message:{type:"LIKE",to:"group001",from:"member001"}}
+{message:{type:"GIFT",to:"group001",from:"member001",body:"giftId"}}
+
+4.服务器接收消息后向房间所有成员推送此消息以及发送者消息
+{message:{type:"TEXT",to:"group001",from:"member001",body:"hello",profile:{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member001","nick":"lamfire","city":"shanghai"}}}
+{message:{type:"LIKE",to:"group001",from:"member001",profile:{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member001","nick":"lamfire","city":"shanghai"}}}
+{message:{type:"GIFT",to:"group001",from:"member001",body:"flower",giftPoint:10041,profile:{"avatar":"http://www.lamfire.com/avatar.png","sex":1,"id":"member001","nick":"lamfire","city":"shanghai"}}}
+
+5.用户进入房间之前(废弃)
+向服务器发送：
+{"service":{"to":"1001","from":"1","ns":"ENTER_ROOM_VALIDATE","type":"get"}}
+
+服务器接收消息后返回消息：
+.可以进入:
+ {"service":{"to":"1001","from":"1","ns":"ENTER_ROOM_VALIDATE","type":"ok"}}
+.不能进入：
+ {"service":{"to":"1001","from":"1","ns":"ENTER_ROOM_VALIDATE","type":"error","error":{"code":407,"body":"Refuse to repeat join the group[1001]"}}}
+ {"service":{"to":"1001","from":"1","ns":"ENTER_ROOM_VALIDATE","type":"error","error":{"code":405,"body":"Anchor has left the room, the room[1001] does not exist."}}}
+
+6.离开房间
+向用户发送：
+{"presence":{"from":"1","to":"group001","type":"unsubscribe"}}

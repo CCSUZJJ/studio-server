@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    
+	<bean id="playerDao" class="com.mob.studio.dao.impl.PlayerDaoImpl" />
+    <bean id="roomDao" class="com.mob.studio.dao.impl.RoomDaoImpl" />
+    <bean id="playerBankDao" class="com.mob.studio.dao.impl.PlayerBankDaoImpl" />
+    <bean id="itemDao" class="com.mob.studio.dao.impl.ItemDaoImpl" />
+    <bean id="paymentDao" class="com.mob.studio.dao.impl.PaymentDaoImpl" />
+    <!-- Redis -->
+    <bean id="redisDao" class="com.mob.studio.redis.impl.RedisDaoImpl" />
+
+</beans>

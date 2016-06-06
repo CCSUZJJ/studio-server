@@ -1,0 +1,67 @@
+1.热门 
+studio
+studio:hot_rank
+VALUE                                                   SCORE
+{roomId}                                                 {viewers}
+
+2.关注
+studio
+studio:follower_rank:{player_id}
+VALUE                                                   SCORE
+{room_id}                                               {created_on}
+
+3.达人
+studio
+studio:talent_rank
+VALUE                                                   SCORE
+{player_id}                                              fans
+
+4.鲜花贡献榜
+studio
+        studio:gift_rank:{player_to_id}
+VALUE                                                   SCORE
+{player_from_id}                                       {giftPoint}
+
+
+5. 用户
+studio
+studio:player:{player_id}
+HK                                        HV
+info                                       {json}
+fans                                      [ids]
+follows                                  [ids]
+blacklist                                [ids]
+point                                     {value}
+send                                     {value}
+coin                                      {value}
+
+
+6. 直播间
+studio
+studio:room:{room_id}
+HK                                             HV
+player                                        {json}
+title                                            {value}
+viewers                                     {value}
+
+
+7. 道具
+studio
+studio:item:{item_id}
+HK                                                          HV
+name                                                      {name}
+point                                                       {point}
+price                                                       {price}
+
+
+8. 在线房间-用户信息 
+studio
+studio:room_online
+HK                                                          HV
+{playerId}                                                 {roomId}
+
+9. 道具列表
+studio
+studio:item_list
+SET
+{item_id}

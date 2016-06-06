@@ -1,0 +1,143 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>studio-server</artifactId>
+        <groupId>com.mob</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.mob</groupId>
+    <artifactId>studio-portal</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>studio-portal</name>
+
+    <packaging>play2</packaging>
+
+    <properties>
+        <play.version>2.2.1</play.version>
+        <log4j.version>1.2.17</log4j.version>
+        <fastjson.version>1.2.8</fastjson.version>
+        <bcprov-jdk16.version>1.45</bcprov-jdk16.version>
+        <tls.version>1.0.0</tls.version>
+        <!--<studio-dao.version>1.0.0-SNAPSHOT</studio-dao.version>-->
+        <!--<studio-service.version>1.0.0-SNAPSHOT</studio-service.version>-->
+    </properties>
+
+        <repositories>
+            <repository>
+                <id>typesafe</id>
+                <url>http://repo.typesafe.com/typesafe/releases/</url>
+            </repository>
+        </repositories>
+
+        <dependencies>
+            <dependency>
+                <groupId>com.mob</groupId>
+                <artifactId>studio-dao</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mob</groupId>
+                <artifactId>studio-service</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mob</groupId>
+                <artifactId>tls-signature</artifactId>
+                <version>${tls.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+            <!-- Play Framework Dependencies -->
+            <dependency>
+                <groupId>com.typesafe.play</groupId>
+                <artifactId>play_2.10</artifactId>
+                <version>${play.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.typesafe.play</groupId>
+                <artifactId>play-test_2.10</artifactId>
+                <version>${play.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+             <!-- the Java API is in this artifact -->
+             <dependency>
+                 <groupId>com.typesafe.play</groupId>
+                 <artifactId>play-java_2.10</artifactId>
+                 <version>${play.version}</version>
+                 <scope>provided</scope>
+                 <exclusions>
+                     <exclusion>
+                         <groupId>org.springframework</groupId>
+                         <artifactId>spring-core</artifactId>
+                     </exclusion>
+                     <exclusion>
+                         <groupId>org.springframework</groupId>
+                         <artifactId>spring-context</artifactId>
+                     </exclusion>
+                     <exclusion>
+                         <groupId>org.springframework</groupId>
+                         <artifactId>spring-beans</artifactId>
+                     </exclusion>
+                 </exclusions>
+             </dependency>
+
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk16</artifactId>
+                <version>${bcprov-jdk16.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    <build>
+        <!-- Play source directory -->
+        <sourceDirectory>app</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.nanoko.playframework</groupId>
+                <artifactId>play2-maven-plugin</artifactId>
+                <version>1.2.5</version>
+                <extensions>true</extensions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+</project>

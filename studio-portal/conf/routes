@@ -1,0 +1,51 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                     controllers.Assets.at(path="/public", file)
+
+# Login
+POST        /login                            controllers.Login.login()
+POST        /tencent/sign                     controllers.Tencent.sign()
+
+# Studio
+POST        /studio/open                      controllers.Studio.open()
+
+# Home page
+POST        /home/hot                         controllers.Home.hot()
+POST        /home/follower                    controllers.Home.follower()
+POST        /home/talent                      controllers.Home.talent()
+POST        /home/search                      controllers.Home.search()
+
+# my actions
+POST        /my/follow/:targetId              controllers.My.follow(targetId : Long)
+POST        /my/unfollow/:targetId            controllers.My.unfollow(targetId : Long)
+POST        /my/black/:targetId               controllers.My.black(targetId : Long)
+POST        /my/unblack/:targetId             controllers.My.unblack(targetId : Long)
+POST        /grant/:targetId                  controllers.My.grant(targetId : Long)
+
+# my home page
+POST        /my/home                          controllers.My.home()
+POST        /my/followers/list                controllers.My.follower_list()
+POST        /my/fans/list                     controllers.My.fans_list()
+POST        /my/blacklist                     controllers.My.black_list()
+POST        /my/giftrank                      controllers.My.gift_rank_list()
+POST        /my/update                        controllers.My.update()
+
+# other player page
+POST        /player/:targetId/portrait        controllers.Player.portrait(targetId : Long)
+POST        /player/:targetId/home            controllers.Player.home(targetId : Long)
+POST        /player/:targetId/follow          controllers.Player.follow(targetId : Long)
+POST        /player/:targetId/fans            controllers.Player.fans(targetId : Long)
+POST        /player/:targetId/giftrank        controllers.Player.gift_rank_list(targetId : Long)
+
+# bank api
+POST        /bank/inventory                   controllers.Bank.inventory()
+POST        /bank/asset                       controllers.Bank.asset()
+POST        /bank/debit                       controllers.Bank.debit_post()
+PUT         /bank/debit                       controllers.Bank.debit_put()
+
+GET         /get/sig                          controllers.Sig.getSig()
+

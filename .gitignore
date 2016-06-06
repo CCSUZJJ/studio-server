@@ -1,0 +1,49 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+# IntelliJ project files
+/.idea_modules
+.idea/
+*.iml
+out
+gen
+*/target/
+
+
+## Eclipse TEMPLATE
+/.classpath
+/.project
+/.settings
+
+
+### PlayFramework template
+# Ignore Play! working directory #
+studio-portal/bin/
+studio-portal/db
+studio-portal/.eclipse
+studio-portal/.idea
+studio-portal/.settings
+/lib/
+studio-portal/logs/
+/modules
+studio-portal/project/project
+studio-portal/project/target
+studio-portal/target
+studio-portal/test
+tmp/
+test-result
+server.pid
+*.eml
+studio-portal/dist/
+.cache

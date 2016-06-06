@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mob.studio.mapper.PaymentMapper">
+    <resultMap id="payment" type="Payment">
+        <id property="id" column="id"/>
+        <id property="createdOn" column="created_on"/>
+        <result property="uuid" column="uuid"/>
+        <result property="userId" column="user_id"/>
+        <result property="status" column="status"/>
+        <result property="updatedOn" column="updated_on"/>
+    </resultMap>
+
+    <resultMap id="paymentItem" type="PaymentItem">
+        <id property="paymentId" column="payment_id"/>
+        <id property="itemId" column="item_id"/>
+        <id property="createdOn" column="created_on"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="amount" column="amount"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <resultMap id="paymentEscrow" type="PaymentEscrow">
+        <id property="paymentId" column="payment_id"/>
+        <id property="createdOn" column="created_on"/>
+        <result property="rowId" column="row_id"/>
+        <result property="paybackedRowId" column="paybacked_row_id"/>
+        <result property="status" column="status"/>
+        <result property="isPaybacked" column="is_paybacked"/>
+        <result property="price" column="price"/>
+        <result property="comment" column="comment"/>
+        <result property="updatedOn" column="updated_on"/>
+    </resultMap>
+
+    <resultMap id="coinHist" type="CoinHist">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="payCoin" column="pay_coin"/>
+        <result property="freeCoin" column="free_coin"/>
+        <result property="exDate" column="ex_date"/>
+        <result property="logDate" column="log_date"/>
+        <result property="trackId" column="track_id"/>
+        <result property="title" column="title"/>
+    </resultMap>
+
+    <insert id="insertPayment" parameterType="Payment">
+        INSERT INTO `payment` (`id`, `uuid`, `user_id`, `status`, `created_on`, `updated_on`)
+        VALUES
+            (#{id}, #{uuid}, #{userId}, #{status}, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+    </insert>
+
+    <select id="getPaymentById" parameterType="Long" resultMap="payment">
+        SELECT * FROM payment
+        WHERE id = #{id}
+    </select>
+
+    <update id="updatePayment" parameterType="Payment">
+        UPDATE `payment`
+        SET
+            `status`   = #{status},
+            updated_on = UNIX_TIMESTAMP()
+        WHERE
+            id = #{id} AND `created_on` = #{createdOn}
+    </update>
+
+    <insert id="insertPaymentItem" parameterType="PaymentItem">
+        INSERT INTO `payment_item` (`payment_id`, `item_id`, `unit_price`, `amount`, `image_url`,
+                                    `description`, `created_on`)
+        VALUES
+            (#{paymentId}, #{itemId}, #{unitPrice}, #{amount}, #{imageUrl},
+             #{description}, UNIX_TIMESTAMP())
+    </insert>
+
+    <insert id="insertPaymentEscrow" parameterType="PaymentEscrow">
+        INSERT INTO `payment_escrow` (`payment_id`, `row_id`, `paybacked_row_id`, `status`, `is_paybacked`,
+                                      `price`, `comment`, `created_on`, `updated_on`)
+        VALUES
+            (#{paymentId}, #{rowId}, #{paybackedRowId}, #{status}, #{isPaybacked},
+             #{price}, #{comment}, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())
+    </insert>
+
+    <select id="getPaymentEscrowById" parameterType="Long" resultMap="paymentEscrow">
+        SELECT * FROM payment_escrow
+        WHERE payment_id = #{paymentId}
+    </select>
+
+    <update id="updatePaymentEscrow" parameterType="PaymentEscrow">
+        UPDATE `payment_escrow`
+        SET
+            `row_id`           = #{rowId},
+            `paybacked_row_id` = #{paybackedRowId},
+            `status`           = #{status},
+            `is_paybacked`     = #{isPaybacked},
+            `price`            = #{price},
+            `comment`          = #{comment},
+            `updated_on`       = UNIX_TIMESTAMP()
+        WHERE
+            `payment_id` = #{paymentId}
+            AND `created_on` = #{createdOn}
+    </update>
+
+    <insert id="insertCoinHist" parameterType="CoinHist">
+        <selectKey resultType="Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO `coin_hist` (`user_id`, `pay_coin`, `free_coin`, `ex_date`,
+                                  `log_date`, `track_id`, `title`)
+        VALUES
+              (#{userId}, #{payCoin}, #{freeCoin}, #{exDate},
+              UNIX_TIMESTAMP(), #{trackId}, #{title})
+    </insert>
+
+    <select id="getPaymentByUUId" parameterType="Map" resultMap="payment">
+        SELECT * FROM payment
+        WHERE uuid = #{uuid}
+    </select>
+
+    <select id="getPaymentItemById" parameterType="Long" resultMap="paymentItem">
+        SELECT * FROM payment_item
+        WHERE payment_id = #{id}
+    </select>
+
+
+</mapper>
